@@ -116,15 +116,28 @@ public class MainActivity extends Activity {
     
     private void selectItem(int position) {
         // update the main content by replacing fragments
+    	Fragment fragment = null;
+    	Bundle args = new Bundle();
+    	if(position == 0){
+    		fragment = new AnnounceFragment();
+    	}else if(position == 1){
+    		fragment = new BioFragment();
+    	}else if(position == 3){
+    		fragment = new CalendarFragment();
+    	}else{
+    		fragment = new AnnounceFragment();
+    	}
+    	/*case 2: //fragment = new EpisodeFragment();
+    	case 4: //fragment = new settingsFragment();*/
     	
-        Fragment fragment = new AnnounceFragment();
-        Bundle args = new Bundle();
+        
+        
         args.putInt(AnnounceFragment.ARG_PAGE_NUMBER, position);
         fragment.setArguments(args);
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-        System.out.println("NEW FRAG");
+        
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
         setTitle(mPageTitles[position]);

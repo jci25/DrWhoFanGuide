@@ -8,7 +8,6 @@
         <item>Bio Info</item>
         <item>Episodes</item>
         <item>Calendar</item>
-        <item>Forum</item>
         <item>Settings</item>
     </string-array>
     <string name="drawer_open">Open navigation drawer</string>
