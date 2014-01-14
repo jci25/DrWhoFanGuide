@@ -17,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.drexel.cs451.dr.who.R;
+
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class MainActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
@@ -121,7 +123,7 @@ public class MainActivity extends Activity {
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
+        System.out.println("NEW FRAG");
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
         setTitle(mPageTitles[position]);
