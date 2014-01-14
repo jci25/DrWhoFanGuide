@@ -3,6 +3,8 @@ package com.drexel.cs451.dr.who;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import com.drexel.cs451.dr.who.load.AnnounceTask;
+
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -51,17 +53,10 @@ public class AnnounceFragment extends BaseFragment {
 	 
 	 private void initCards() {
 
-	        ArrayList<Card> cards = new ArrayList<Card>();
-	        for (int i=0;i<200;i++){
-	            AnnounceCard card = new AnnounceCard(getActivity(),"My title "+i,"Inner text "+i);
-	            cards.add(card);
-	        }
-
-	        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(getActivity(),cards);
-
-	        CardListView listView = (CardListView) getActivity().findViewById(R.id.announce_list_cards);
-	        if (listView!=null){
-	            listView.setAdapter(mCardArrayAdapter);
-	        }
+		 AnnounceTask mAnnounceTask = new AnnounceTask(this.getActivity());
+			mAnnounceTask.execute("http://www.bbc.co.uk/blogs/doctorwho/");
+		 
 	    }
 }
+
+

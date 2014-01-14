@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		
 		mTitle = mDrawerTitle = getTitle();
         mPageTitles = getResources().getStringArray(R.array.pages_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

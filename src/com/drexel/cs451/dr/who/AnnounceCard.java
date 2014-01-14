@@ -1,20 +1,33 @@
 package com.drexel.cs451.dr.who;
 
+import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
+import it.gmariotti.cardslib.library.view.CardView;
 
 public class AnnounceCard extends Card{
 
     protected String mTitleHeader;
-    protected String mTitleMain;
+    protected String Author, Date, Image, URL;
+    protected Activity act;
 
-    public AnnounceCard(Context context,String titleHeader,String titleMain) {
+    public AnnounceCard(Context context,String titleHeader,String Auth, String Date, String Img, String URL, Activity activity) {
         super(context, R.layout.card_announce);
+        this.act=activity;
         this.mTitleHeader=titleHeader;
-        this.mTitleMain=titleMain;
+        this.Author=Auth;
+        this.Date=Date;
+        this.Image=Img;
+        this.URL=URL;
         init();
     }
 
@@ -32,12 +45,30 @@ public class AnnounceCard extends Card{
 
 			@Override
 			public void onClick(Card card, View view) {
-				Toast.makeText(getContext(), "Click Listener card=" + mTitleHeader, Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(act.getBaseContext(), WebViewer.class);
+				intent.putExtra("URL", URL);
+				act.startActivity(intent);
 			}
         });
 
         //Set the card inner text
-        setTitle(mTitleMain);
+        //setTitle(mTitleMain);
+        
+        
+
+    }
+    
+    @Override
+    public void setupInnerViewElements(ViewGroup parent, View view) {
+
+        //Retrieve elements
+        TextView Author = (TextView) parent.findViewById(R.id.Author);
+        //Author.setText(this.Author);
+        TextView Date = (TextView) parent.findViewById(R.id.date);
+        Date.setText(this.Date);
+        ImageView im = (ImageView) parent.findViewById(R.id.imageView);
+        UrlImageViewHelper.setUrlDrawable(im, this.Image);
+        
     }
 
 }
