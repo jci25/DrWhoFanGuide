@@ -2,7 +2,9 @@ package com.drexel.cs451.dr.who;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -15,6 +17,7 @@ public class WebViewer extends Activity {
 		super.onCreate(savedInstanceState);
 		this.getWindow().requestFeature(Window.FEATURE_PROGRESS);
 		setContentView(R.layout.activity_web_viewer);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		Bundle extras = getIntent().getExtras();
 		String url = extras.getString("URL");
 		getWindow().setFeatureInt( Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON); 
@@ -37,5 +40,14 @@ public class WebViewer extends Activity {
 	        });
 	}
 
-	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    // Respond to the action bar's Up/Home button
+	    case android.R.id.home:
+	        finish();
+	        return true;
+	    }
+	    return super.onOptionsItemSelected(item);
+	}
 }

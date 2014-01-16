@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -122,6 +123,7 @@ public class MainActivity extends Activity {
     		fragment = new AnnounceFragment();
     	}else if(position == 1){
     		fragment = new BioFragment();
+    		args.putString("URL", "http://www.bbc.co.uk/programmes/b006q2x0/features/characters");
     	}else if(position == 3){
     		fragment = new CalendarFragment();
     	}else{
@@ -136,7 +138,11 @@ public class MainActivity extends Activity {
         fragment.setArguments(args);
 
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        FragmentTransaction ft = fragmentManager.beginTransaction(); 
+        ft.replace(R.id.content_frame, fragment);        	
+        ft.commit();
+        //fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
@@ -168,4 +174,6 @@ public class MainActivity extends Activity {
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+    
+    
 }

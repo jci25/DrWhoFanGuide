@@ -3,8 +3,12 @@ package com.drexel.cs451.dr.who;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,13 +22,15 @@ public class BioCard extends Card {
 
     protected String headerTitle, title, img, url;
     protected Activity act;
+    private FragmentManager fm;
 
-    public BioCard(Context context, String title, String img, String url, Activity act) {
+    public BioCard(Context context, String title, String img, String url, Activity act, FragmentManager fm) {
     	super(context, R.layout.card_bio);
         this.title=title;
         this.img=img;
         this.url=url;
         this.act=act;
+        this.fm=fm;
         init();
     }
 
@@ -43,14 +49,27 @@ public class BioCard extends Card {
 
 			@Override
 			public void onClick(Card card, View view) {
-				Intent intent = new Intent(act.getBaseContext(), WebViewer.class);
-				intent.putExtra("URL", url);
-				act.startActivity(intent);
+				if(url.contains("features") || url.contains("characters")){
+					Fragment fragment = new BioFragment();
+		    		Bundle bundle = new Bundle();
+		    		bundle.putString("URL", url);
+		    		fragment.setArguments(bundle);
+		    		FragmentTransaction ft = fm.beginTransaction(); 
+		            ft.replace(R.id.content_frame, fragment);
+		            ft.addToBackStack(null);
+		            ft.commit();
+		            setTitle("Bio Info");
+				}else{
+					Intent intent = new Intent(act.getBaseContext(), ProfleViewer.class);
+					intent.putExtra("URL", url);
+					intent.putExtra("Img", img);
+					act.startActivity(intent);
+				}
 			}
         });
 
         //Set the card inner text
-        //setTitle(mTitleMain);
+        //setTitle(title);
         
         
 
@@ -60,9 +79,10 @@ public class BioCard extends Card {
     public void setupInnerViewElements(ViewGroup parent, View view) {
     	TextView tv = (TextView) parent.findViewById(R.id.charTitle);
     	tv.setText(title);
+    	
         ImageView im = (ImageView) parent.findViewById(R.id.bioImage);
-        im.setScaleX((float) 2.5);
-        im.setScaleY((float) 2.5);
+        //im.setScaleX((float) 4);
+        //im.setScaleY((float) 4);
         UrlImageViewHelper.setUrlDrawable(im, this.img);
         
     }

@@ -15,6 +15,7 @@ import com.drexel.cs451.dr.who.BioCard;
 import com.drexel.cs451.dr.who.R;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.ArrayAdapter;
@@ -23,10 +24,12 @@ import android.widget.ArrayAdapter;
 public class BioTask extends AsyncTask<String, Void, String> {
 	private String[] items;
 	private Activity calledActivity;
+	private FragmentManager fm;
 	private ArrayList<String[]> itemsList = new ArrayList<String[]>();
 	
-	public BioTask(Activity act){
+	public BioTask(Activity act, FragmentManager fragmentManager){
 		calledActivity = act;
+		fm = fragmentManager;
 	}
 	@Override
 	protected String doInBackground(String... input) {
@@ -43,7 +46,7 @@ public class BioTask extends AsyncTask<String, Void, String> {
 	protected void onPostExecute(String result) {
 		ArrayList<Card> cards = new ArrayList<Card>();
         for (int i=0;i<itemsList.size();i++){
-            BioCard card = new BioCard(calledActivity,itemsList.get(i)[0],itemsList.get(i)[1],itemsList.get(i)[2],calledActivity);
+            BioCard card = new BioCard(calledActivity,itemsList.get(i)[0],itemsList.get(i)[1],itemsList.get(i)[2],calledActivity, fm);
             cards.add(card);
         }
 

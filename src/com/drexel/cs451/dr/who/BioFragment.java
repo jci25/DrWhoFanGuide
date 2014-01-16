@@ -6,6 +6,7 @@ import com.drexel.cs451.dr.who.load.AnnounceTask;
 import com.drexel.cs451.dr.who.load.BioTask;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,18 +38,22 @@ public class BioFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        initCards();
+        Bundle bundle = this.getArguments();
+        String myUrl = bundle.getString("URL", "http://www.bbc.co.uk/programmes/b006q2x0/features/characters");
+        initCards(myUrl);
     }
 	
 	
 	
 	 
-	 private void initCards() {
+	 private void initCards(String url) {
 
-		 BioTask mBioTask = new BioTask(this.getActivity());
-			mBioTask.execute("http://www.bbc.co.uk/programmes/b006q2x0/features/characters");
+		 BioTask mBioTask = new BioTask(this.getActivity(), getFragmentManager());
+			mBioTask.execute(url);
+			
 		 
 	    }
+	 
+	 
 }
 

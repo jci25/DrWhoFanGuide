@@ -8,6 +8,7 @@
          space available using match_parent in both dimensions. -->
     <FrameLayout
         android:id="@+id/content_frame"
+        android:background="@android:color/darker_gray"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
