@@ -94,19 +94,43 @@ public String buffer(String announceUrl){
 public String readSource(String html, String fullUrl){
 	//System.out.println("start" + html);    </ul>
 	String[] content = html.split("<li class=\"person");
+	if( fullUrl.contains("-characters")){
+		content = html.split("li class=\"item individual\"");
+	}else if((fullUrl.contains("-monsters") || fullUrl.contains("monsters-")) && content.length <= 1){
+		content = html.split("<li class=\"item individual\"");
+	}
 	String artTitle = null;
 	String artImg = null;
 	String artURL = null;
 	for(int i = 1; i < content.length; i++){
+		
 		if(i == content.length - 1){
 			content[i] = content[i].substring(0, content[i].indexOf("</ul>"));
 		}
-		artURL = content[i].substring(content[i].indexOf("a href=\"")+8, content[i].indexOf("\"><span"));
-		artURL = "http://www.bbc.co.uk"+artURL;
-		content[i] = content[i].substring(content[i].indexOf("\"><span"));
-		artImg = content[i].substring(content[i].indexOf("img src=\"")+9, content[i].indexOf("\" "));
-		content[i] = content[i].substring(content[i].indexOf("\" "));
-		artTitle = content[i].substring(content[i].indexOf("</span>")+7, content[i].indexOf("</a>"));
+		
+		
+		if(fullUrl.contains("-characters") || fullUrl.contains("-monsters") || fullUrl.contains("monsters-")){
+			artURL = content[i].substring(content[i].indexOf("href=\"")+6, content[i].indexOf("\">"));
+			artURL = "http://www.bbc.co.uk"+artURL;
+			System.out.println(artURL);
+			content[i] = content[i].substring(content[i].indexOf("\">"));
+			artTitle = content[i].substring(content[i].indexOf("<span class=\"title\">")+20, content[i].indexOf("</span>"));
+			System.out.println(artTitle);
+			content[i] = content[i].substring(content[i].indexOf("</span>"));
+			artImg = content[i].substring(content[i].indexOf("src=\"")+5, content[i].indexOf("\" height"));
+			System.out.println(artImg);
+			
+		}else{
+			content[i] = content[i].substring(content[i].indexOf("\">")+2);
+			artURL = content[i].substring(content[i].indexOf("href=\"")+6, content[i].indexOf("\">"));
+			artURL = "http://www.bbc.co.uk"+artURL;
+			content[i] = content[i].substring(content[i].indexOf("\">"));
+			artImg = content[i].substring(content[i].indexOf("img src=\"")+9, content[i].indexOf("\" "));
+			content[i] = content[i].substring(content[i].indexOf("\" "));
+			artTitle = content[i].substring(content[i].indexOf("</span>")+7, content[i].indexOf("</a>"));
+		}
+		
+		
 		items = new String[3];
 		items[0] = artTitle;
 		items[1] = artImg;

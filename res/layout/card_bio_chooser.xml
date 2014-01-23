@@ -1,0 +1,36 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+
+    <!-- Use same ID to use built-in features -->
+	
+    <ImageView
+        android:id="@+id/chooserBioImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chooserTitle"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:scaleType="centerCrop" />
+    
+    <TextView
+        android:id="@+id/chooserTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:layout_below="@+id/chooserBioImage"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+</RelativeLayout>

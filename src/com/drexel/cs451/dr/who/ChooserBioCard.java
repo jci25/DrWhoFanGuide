@@ -18,14 +18,14 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.internal.Card.OnCardClickListener;
 
-public class BioCard extends Card {
+public class ChooserBioCard extends Card {
 
     protected String headerTitle, title, img, url;
     protected Activity act;
     private FragmentManager fm;
 
-    public BioCard(Context context, String title, String img, String url, Activity act, FragmentManager fm) {
-    	super(context, R.layout.card_bio);
+    public ChooserBioCard(Context context, String title, String img, String url, Activity act, FragmentManager fm) {
+    	super(context, R.layout.card_bio_chooser);
         this.title=title;
         this.img=img;
         this.url=url;
@@ -49,7 +49,7 @@ public class BioCard extends Card {
 
 			@Override
 			public void onClick(Card card, View view) {
-				if(url.contains("features") || url.contains("characters") || url.contains("-monsters") || url.contains("monsters-")){
+				if(url.contains("features") || url.contains("characters") || url.contains("-monsters") || url.contains("monsters-") ){
 					Fragment fragment = new BioFragment();
 		    		Bundle bundle = new Bundle();
 		    		bundle.putString("URL", url);
@@ -58,7 +58,7 @@ public class BioCard extends Card {
 		            ft.replace(R.id.content_frame, fragment);
 		            ft.addToBackStack(null);
 		            ft.commit();
-		            setTitle("Bio Info");
+		            act.setTitle(title);
 				}else{
 					Intent intent = new Intent(act.getBaseContext(), ProfleViewer.class);
 					intent.putExtra("URL", url);
@@ -77,10 +77,10 @@ public class BioCard extends Card {
     
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-    	TextView tv = (TextView) parent.findViewById(R.id.charTitle);
+    	TextView tv = (TextView) parent.findViewById(R.id.chooserTitle);
     	tv.setText(title);
     	
-        ImageView im = (ImageView) parent.findViewById(R.id.bioImage);
+        ImageView im = (ImageView) parent.findViewById(R.id.chooserBioImage);
         //im.setScaleX((float) 4);
         //im.setScaleY((float) 4);
         UrlImageViewHelper.setUrlDrawable(im, this.img);

@@ -81,6 +81,7 @@ public String buffer(String announceUrl){
 public String readSource(String html, String fullUrl){
 	//System.out.println("start" + html);    </ul>
 	String[] content = html.split("<div id=\"content\">");
+	System.out.println(content[1]);
 	String sourceHtml = content[1].substring(0, content[1].indexOf("</div>"));
 	
 	

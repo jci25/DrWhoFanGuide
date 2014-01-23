@@ -123,7 +123,8 @@ public class MainActivity extends Activity {
     		fragment = new AnnounceFragment();
     	}else if(position == 1){
     		fragment = new BioFragment();
-    		args.putString("URL", "http://www.bbc.co.uk/programmes/b006q2x0/features/characters");
+    		fragment = new BioChooserFragment();
+    		//args.putString("URL", "http://www.bbc.co.uk/programmes/b006q2x0/features/characters");
     	}else if(position == 3){
     		fragment = new CalendarFragment();
     	}else{

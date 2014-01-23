@@ -29,9 +29,9 @@ public class BioFragment extends BaseFragment {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_bio, container, false);
         int i = getArguments().getInt(ARG_PAGE_NUMBER);
-        String page = getResources().getStringArray(R.array.pages_array)[i];
+        //String page = getResources().getStringArray(R.array.pages_array)[i];
 
-        getActivity().setTitle(page);
+        //getActivity().setTitle(page);
         return rootView;
     }
 
