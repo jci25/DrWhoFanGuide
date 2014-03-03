@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.drexel.cs451.dr.who.R;
 
@@ -102,6 +105,16 @@ public class MainActivity extends Activity {
         }
         // Handle action buttons
         switch(item.getItemId()) {
+        case R.id.action_settings:
+        	SharedPreferences settings = this.getSharedPreferences("prefs", 0);
+        	final SharedPreferences.Editor editor = settings.edit();
+		    editor.putString("user", null);
+		    editor.putString("pass", null);
+		    editor.commit();
+        	this.finish();
+        	Intent intent = new Intent(MainActivity.this, StartActivity.class);
+            MainActivity.this.startActivity(intent);
+            return true;
         default:
             return super.onOptionsItemSelected(item);
         }
@@ -122,13 +135,22 @@ public class MainActivity extends Activity {
     	if(position == 0){
     		fragment = new AnnounceFragment();
     	}else if(position == 1){
-    		fragment = new BioFragment();
-    		fragment = new BioChooserFragment();
+    		Toast.makeText(getBaseContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
+    		mDrawerLayout.closeDrawer(mDrawerList);
+    		return;
+    		//fragment = new BioFragment();
+    		//fragment = new BioChooserFragment();
     		//args.putString("URL", "http://www.bbc.co.uk/programmes/b006q2x0/features/characters");
     	}else if(position == 3){
-    		fragment = new CalendarFragment();
+    		Toast.makeText(getBaseContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
+    		mDrawerLayout.closeDrawer(mDrawerList);
+    		return;
+    		//fragment = new CalendarFragment();
     	}else{
-    		fragment = new AnnounceFragment();
+    		Toast.makeText(getBaseContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
+    		mDrawerLayout.closeDrawer(mDrawerList);
+    		return;
+    		//fragment = new AnnounceFragment();
     	}
     	/*case 2: //fragment = new EpisodeFragment();
     	case 4: //fragment = new settingsFragment();*/
