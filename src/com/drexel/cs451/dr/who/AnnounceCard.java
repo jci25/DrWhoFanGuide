@@ -16,18 +16,18 @@ import it.gmariotti.cardslib.library.view.CardView;
 
 public class AnnounceCard extends Card{
 
-    protected String mTitleHeader;
-    protected String Author, Date, Image, URL;
-    protected Activity act;
+    protected String mTitleHeader, mediaUrl, previewText, id;
+    protected Context context;
+    //protected Activity act;
 
-    public AnnounceCard(Context context,String titleHeader,String Auth, String Date, String Img, String URL, Activity activity) {
+    public AnnounceCard(Context context, String titleHeader, String mediaUrl, String text, String id) {
         super(context, R.layout.card_announce);
-        this.act=activity;
+        //this.act=activity;
         this.mTitleHeader=titleHeader;
-        this.Author=Auth;
-        this.Date=Date;
-        this.Image=Img;
-        this.URL=URL;
+        this.mediaUrl=mediaUrl;
+        this.previewText=text;
+        this.id=id;
+        this.context = context;
         init();
     }
 
@@ -45,9 +45,10 @@ public class AnnounceCard extends Card{
 
 			@Override
 			public void onClick(Card card, View view) {
-				Intent intent = new Intent(act.getBaseContext(), WebViewer.class);
-				intent.putExtra("URL", URL);
-				act.startActivity(intent);
+				Intent intent = new Intent(context, AnnouncementActivity.class);
+				intent.putExtra("text", previewText);
+				intent.putExtra("Img", mediaUrl);
+				context.startActivity(intent);
 			}
         });
 
@@ -62,12 +63,10 @@ public class AnnounceCard extends Card{
     public void setupInnerViewElements(ViewGroup parent, View view) {
 
         //Retrieve elements
-        TextView Author = (TextView) parent.findViewById(R.id.Author);
-        //Author.setText(this.Author);
-        TextView Date = (TextView) parent.findViewById(R.id.date);
-        Date.setText(this.Date);
+        TextView previewText = (TextView) parent.findViewById(R.id.text);
+        previewText.setText(this.previewText);
         ImageView im = (ImageView) parent.findViewById(R.id.imageView);
-        UrlImageViewHelper.setUrlDrawable(im, this.Image);
+        UrlImageViewHelper.setUrlDrawable(im, this.mediaUrl, R.drawable.ic_launcher);
         
     }
 

@@ -3,7 +3,7 @@ package com.drexel.cs451.dr.who;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import com.drexel.cs451.dr.who.load.AnnounceTask;
+import com.drexel.cs451.dr.who.load.ServerCalls;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -23,6 +23,8 @@ public class AnnounceFragment extends BaseFragment {
 
     protected ScrollView mScrollView;
 	public static final String ARG_PAGE_NUMBER = "page_number";
+	private ServerCalls sc = new ServerCalls();
+	ArrayList<Card> cards = new ArrayList<Card>();
 	
 	@Override
     public int getTitleResourceId() {
@@ -53,9 +55,20 @@ public class AnnounceFragment extends BaseFragment {
 	 
 	 private void initCards() {
 
-		 AnnounceTask mAnnounceTask = new AnnounceTask(this.getActivity());
-			mAnnounceTask.execute("http://www.bbc.co.uk/blogs/doctorwho/");
+		 //AnnounceTask mAnnounceTask = new AnnounceTask(this.getActivity());
+		 //mAnnounceTask.execute("http://www.bbc.co.uk/blogs/doctorwho/");
+		 ArrayList<String[]> itemsList = sc.getAnnouncements(1, 10);
 		 
+		 for (int i=0;i<itemsList.size();i++){
+	            AnnounceCard card = new AnnounceCard(this.getActivity(),itemsList.get(i)[0],itemsList.get(i)[1],itemsList.get(i)[2],itemsList.get(i)[3]);
+	            cards.add(card);
+	        }
+	        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(this.getActivity(),cards);
+
+	        CardListView listView = (CardListView) getActivity().findViewById(R.id.announce_list_cards);
+	        if (listView!=null){
+	            listView.setAdapter(mCardArrayAdapter);
+	        }
 	    }
 }
 

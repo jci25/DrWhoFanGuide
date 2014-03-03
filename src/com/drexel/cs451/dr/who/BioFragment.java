@@ -2,7 +2,6 @@ package com.drexel.cs451.dr.who;
 
 import it.gmariotti.cardslib.demo.fragment.BaseFragment;
 
-import com.drexel.cs451.dr.who.load.AnnounceTask;
 import com.drexel.cs451.dr.who.load.BioTask;
 
 import android.app.Fragment;

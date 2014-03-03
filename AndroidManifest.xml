@@ -27,6 +27,10 @@
             android:theme="@style/AppTheme.TranslucentActionBar" >
         </activity>
         <activity
+            android:name="com.drexel.cs451.dr.who.AnnouncementActivity"
+            android:theme="@style/AppTheme.TranslucentActionBar" >
+        </activity>
+        <activity
             android:name="com.drexel.cs451.dr.who.LoginActivity"
             android:label="Sign in"
             android:windowSoftInputMode="adjustResize|stateVisible" >

@@ -4,7 +4,6 @@ import it.gmariotti.cardslib.demo.fragment.BaseFragment;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.view.CardView;
 
-import com.drexel.cs451.dr.who.load.AnnounceTask;
 import com.drexel.cs451.dr.who.load.BioTask;
 
 import android.app.Fragment;

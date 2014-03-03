@@ -201,7 +201,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int chooserTitle=0x7f0d0023;
         public static final int confPassword=0x7f0d000c;
         public static final int content_frame=0x7f0d0008;
-        public static final int date=0x7f0d001d;
         public static final int drawer_layout=0x7f0d0007;
         public static final int email=0x7f0d0003;
         public static final int fab__container=0x7f0d0031;
@@ -229,6 +228,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int sign_in_button=0x7f0d0006;
         public static final int sign_up_button=0x7f0d000d;
         public static final int signupButton=0x7f0d0010;
+        public static final int text=0x7f0d001d;
         public static final int topSpacer=0x7f0d001a;
         public static final int undobar=0x7f0d002a;
         public static final int undobar_button=0x7f0d002c;
