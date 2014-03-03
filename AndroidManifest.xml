@@ -10,7 +10,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -19,19 +19,33 @@
         <activity
             android:name="com.drexel.cs451.dr.who.MainActivity"
             android:label="@string/app_name" >
+        </activity>
+        <activity android:name="com.drexel.cs451.dr.who.WebViewer" >
+        </activity>
+        <activity
+            android:name="com.drexel.cs451.dr.who.ProfleViewer"
+            android:theme="@style/AppTheme.TranslucentActionBar" >
+        </activity>
+        <activity
+            android:name="com.drexel.cs451.dr.who.LoginActivity"
+            android:label="Sign in"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+            
+        </activity>
+        <activity
+            android:name="com.drexel.cs451.dr.who.SignupActivity"
+            android:label="Sign up"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+            
+        </activity>
+        <activity
+            android:name="com.drexel.cs451.dr.who.StartActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".WebViewer">
-    </activity>
-            
-            
-        <activity android:name=".ProfleViewer"
-            android:theme="@style/AppTheme.TranslucentActionBar"
-            >
         </activity>
     </application>
 
