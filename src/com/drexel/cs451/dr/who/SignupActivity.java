@@ -12,6 +12,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -43,6 +45,20 @@ public class SignupActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 	private ServerCalls sc = new ServerCalls();
+	
+	private String blockCharacterSet = "~#^|$%&*!?'\" ";
+
+    private InputFilter filter = new InputFilter() {
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+
+            if (source != null && blockCharacterSet.contains(("" + source))) {
+                return "";
+            }
+            return null;
+        }
+    };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +69,15 @@ public class SignupActivity extends Activity {
 		// Set up the login form.
 		//mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
+		mEmailView.setFilters(new InputFilter[] { filter});
 		mUserView =  (EditText) findViewById(R.id.user);
+		//mUserView.setFilters(new InputFilter[] { filter });
 
 		mPasswordView = (EditText) findViewById(R.id.password);
+		mPasswordView.setFilters(new InputFilter[] { filter });
 		
 		mConfirmView = (EditText) findViewById(R.id.confPassword);
+		mConfirmView.setFilters(new InputFilter[] { filter });
 		mConfirmView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override

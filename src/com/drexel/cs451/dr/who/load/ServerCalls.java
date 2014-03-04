@@ -87,6 +87,7 @@ public class ServerCalls extends Activity {
 			String e) {
 			final String URL = "http://chaosfalcon.com:8089/adduser?username="+u+"&password="+p+"&confirm_password="+c+"&email="+e;
 		 
+			System.out.println(URL);
 			String response = httpGet(URL);
 			try{
 				JSONObject jObject = new JSONObject(response);
