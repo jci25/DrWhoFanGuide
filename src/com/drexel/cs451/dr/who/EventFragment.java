@@ -5,22 +5,17 @@ import java.util.List;
 import java.util.Locale;
 
 import com.drexel.cs451.dr.who.load.ServerCalls;
-import com.drexel.cs451.dr.who.views.AnnounceCard;
-import com.drexel.cs451.dr.who.views.AnnounceCardLoad;
+import com.drexel.cs451.dr.who.views.EventCard;
+import com.drexel.cs451.dr.who.views.EventCardLoad;
 
 import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ScrollView;
-import android.widget.SearchView;
 
 import it.gmariotti.cardslib.demo.fragment.BaseFragment;
 import it.gmariotti.cardslib.library.internal.Card;
@@ -31,7 +26,7 @@ import it.gmariotti.cardslib.library.internal.base.BaseCard;
 import it.gmariotti.cardslib.library.view.CardListView;
 import it.gmariotti.cardslib.library.view.CardView;
 
-public class AnnounceFragment extends BaseFragment {
+public class EventFragment extends BaseFragment {
 
     protected ScrollView mScrollView;
 	public static final String ARG_PAGE_NUMBER = "page_number";
@@ -40,7 +35,6 @@ public class AnnounceFragment extends BaseFragment {
 	CardListView listView;
 	CardArrayAdapter mCardArrayAdapter;
 	int count = 5;
-	protected Menu menu;
 	
 	@Override
     public int getTitleResourceId() {
@@ -51,12 +45,10 @@ public class AnnounceFragment extends BaseFragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-		 
         View rootView = inflater.inflate(R.layout.fragment_announce, container, false);
         int i = getArguments().getInt(ARG_PAGE_NUMBER);
         String page = getResources().getStringArray(R.array.pages_array)[i];
 
-        setHasOptionsMenu(true);
         getActivity().setTitle(page);
         return rootView;
     }
@@ -65,18 +57,29 @@ public class AnnounceFragment extends BaseFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-       
-        initCards ic = new initCards(this);
-		 ic.execute();
+        try{
+        	mCardArrayAdapter.clear();
+        }catch(Exception e){
+        	
+        }
+        try{
+        	new initCards(this).execute();
+        }catch(Exception e){
+        	
+        }
+    }
+    
+    
+    @Override
+    public void onPause(){
+    	super.onPause();
     }
     
     @Override
-	public void onCreateOptionsMenu(
-	      Menu menu, MenuInflater inflater) {
-		this.menu = menu;
-        //System.out.println("got here");
-        super.onCreateOptionsMenu(menu, inflater);
-	}
+    public void onResume(){
+    	super.onResume();
+    	
+    }
 	
 	public void removeCard(int pos, int cardPos){
 		
@@ -87,56 +90,50 @@ public class AnnounceFragment extends BaseFragment {
 	
 	 
 	 
-	private class initCards extends AsyncTask<Void, Void, ArrayList<String[]>> {
+	 
+	 private class initCards extends AsyncTask<Void, Void, ArrayList<String[]>> {
 
-		 protected AnnounceFragment af;
+		 protected EventFragment sf;
 		 
-		 protected initCards(AnnounceFragment af){
-			 this.af = af;
+		 protected initCards(EventFragment sf){
+			 this.sf = sf;
 		 }
 
 		 @Override
 			protected void onPostExecute(ArrayList<String[]> result) {
 				// TODO Auto-generated method stub
-			 ArrayList<String[]> itemsList = result;
-			 
-				
-			 
-			 for (int i=0;i<itemsList.size();i++){
-		            AnnounceCard card = new AnnounceCard(getActivity(),itemsList.get(i)[0],itemsList.get(i)[1],itemsList.get(i)[2],itemsList.get(i)[3]);
-		            cards.add(card);
-		        }
-			 if(itemsList.size() % count == 0 && itemsList.size() != 0){
-				 AnnounceCard card1 = (AnnounceCard) cards.get(cards.size()-1);
-				 AnnounceCardLoad card = new AnnounceCardLoad(getActivity(), af, Integer.parseInt(card1.id), cards.size());
-				 card.setOnClickListener(new OnCardClickListener(){
-
-					@Override
-					public void onClick(Card card, View view) {
-						// TODO Auto-generated method stub
-						AnnounceCard card1 = (AnnounceCard) cards.get(cards.size()-2);
-						System.out.println(card1.id);
-						removeCard(Integer.parseInt(card1.id), cards.size()-1);
-					}
-					 
-				 });
-		            cards.add(card);
+			 try{
+				 ArrayList<String[]> itemsList = result;
+				 
+					
+				 
+				 for (int i=0;i<itemsList.size();i++){
+			            EventCard card = new EventCard(getActivity(),itemsList.get(i)[0],itemsList.get(i)[1],itemsList.get(i)[2],itemsList.get(i)[3],itemsList.get(i)[4],itemsList.get(i)[5], getActivity().getFragmentManager(), getActivity(), new EpisodeFragment());
+			            cards.add(card);
+			        }
+				 if(itemsList.size() % count == 0 && itemsList.size() != 0){
+					 EventCard card1 = (EventCard) cards.get(cards.size()-1);
+					 EventCardLoad card = new EventCardLoad(getActivity(), sf, Integer.parseInt(card1.event_id), cards.size());
+					 cards.add(card);
+				 }
+			        mCardArrayAdapter = new CardArrayAdapter(getActivity(),cards);
+	
+			        listView = (CardListView) getActivity().findViewById(R.id.announce_list_cards);
+			        if (listView!=null){
+			            listView.setAdapter(mCardArrayAdapter);
+			        }
+			        sf.getActivity().runOnUiThread(new Runnable() {
+		                public void run() {
+		                    // some code #3 (that needs to be ran in UI thread)
+		               	 //mCardArrayAdapter.addAll(cards);
+		               	
+		               	 //listView.invalidateViews();
+		               	sf.getActivity().setProgressBarIndeterminateVisibility(false);
+		                }
+		            });
+			 }catch(Exception e){
+				 
 			 }
-		        mCardArrayAdapter = new CardArrayAdapter(getActivity(),cards);
-
-		        listView = (CardListView) getActivity().findViewById(R.id.announce_list_cards);
-		        if (listView!=null){
-		            listView.setAdapter(mCardArrayAdapter);
-		        }
-		        af.getActivity().runOnUiThread(new Runnable() {
-	                public void run() {
-	                    // some code #3 (that needs to be ran in UI thread)
-	               	 //mCardArrayAdapter.addAll(cards);
-	               	
-	               	 //listView.invalidateViews();
-	               	af.getActivity().setProgressBarIndeterminateVisibility(false);
-	                }
-	            });
 			}
 
 	        @Override
@@ -145,29 +142,38 @@ public class AnnounceFragment extends BaseFragment {
 			@Override
 			protected ArrayList<String[]> doInBackground(Void... arg0) {
 				// TODO Auto-generated method stub
-				af.getActivity().runOnUiThread(new Runnable() {
-	                public void run() {
-	                    // some code #3 (that needs to be ran in UI thread)
-	               	 //mCardArrayAdapter.addAll(cards);
-	               	
-	               	 //listView.invalidateViews();
-	               	af.getActivity().setProgressBarIndeterminateVisibility(true);
-	                }
-	            });
-				ArrayList<String[]> itemsList = sc.getAnnouncements(0, count);
-				
-				return itemsList;
+				try{
+					sf.getActivity().runOnUiThread(new Runnable() {
+		                public void run() {
+		                    // some code #3 (that needs to be ran in UI thread)
+		               	 //mCardArrayAdapter.addAll(cards);
+		               	
+		               	 //listView.invalidateViews();
+		                	try{
+		                		sf.getActivity().setProgressBarIndeterminateVisibility(true);
+		                	}catch(Exception e){
+		                		
+		                	}
+		                }
+		            });
+					ArrayList<String[]> itemsList = sc.getEvents(1, count);
+					
+					return itemsList;
+				}catch(Exception e){
+					return null;
+				}
 			}
 			
 	    }
-	
-	private class removeCard extends AsyncTask<Void, Void, ArrayList<String[]>> {
+	 
+	 
+	 private class removeCard extends AsyncTask<Void, Void, ArrayList<String[]>> {
 
-		 protected AnnounceFragment af;
+		 protected EventFragment sf;
 		 protected int pos, cardPos;
 		 
-		 protected removeCard(AnnounceFragment af, int pos, int cardPos){
-			 this.af = af;
+		 protected removeCard(EventFragment sf, int pos, int cardPos){
+			 this.sf = sf;
 			 this.pos = pos;
 			 this.cardPos = cardPos;
 		 }
@@ -175,28 +181,27 @@ public class AnnounceFragment extends BaseFragment {
 		 @Override
 			protected void onPostExecute(ArrayList<String[]> result) {
 			 ArrayList<String[]> itemsList = result;
+			 System.out.println(itemsList.size());
 			 for (int i=0;i<itemsList.size();i++){
-		            AnnounceCard card = new AnnounceCard(getActivity(),itemsList.get(i)[0],itemsList.get(i)[1],itemsList.get(i)[2],itemsList.get(i)[3]);
+				 EventCard card = new EventCard(getActivity(),itemsList.get(i)[0],itemsList.get(i)[1],itemsList.get(i)[2],itemsList.get(i)[3],itemsList.get(i)[4],itemsList.get(i)[5], getActivity().getFragmentManager(), getActivity(), new EpisodeFragment());
 		            cards.add(card);
 		        }
-			 AnnounceCard card1 = (AnnounceCard) cards.get(cards.size()-1);
+			 EventCard card1 = (EventCard) cards.get(cards.size()-1);
 			 if(itemsList.size() % count == 0 && itemsList.size() != 0){
 				 cards.remove(cardPos);
-				 if(!card1.id.equals("1")){
-					 AnnounceCardLoad card = new AnnounceCardLoad(getActivity(), af, Integer.parseInt(card1.id), mCardArrayAdapter.getCount() );
+					 EventCardLoad card = new EventCardLoad(getActivity(), sf, Integer.parseInt(card1.event_id), mCardArrayAdapter.getCount() );
 				 card.setOnClickListener(new OnCardClickListener(){
 
 						@Override
 						public void onClick(Card card, View view) {
 							// TODO Auto-generated method stub
-							AnnounceCard card1 = (AnnounceCard) cards.get(cards.size()-2);
+							EventCard card1 = (EventCard) cards.get(cards.size()-2);
 							System.out.println(mCardArrayAdapter.getCount());
-							removeCard(Integer.parseInt(card1.id), mCardArrayAdapter.getCount()-1 );
+							removeCard(Integer.parseInt(card1.event_id), mCardArrayAdapter.getCount()-1 );
 						}
 						 
 					 });
 		            cards.add(card);
-				 }
 		            getActivity().runOnUiThread(new Runnable() {
 		                public void run() {
 		                    // some code #3 (that needs to be ran in UI thread)
@@ -220,13 +225,13 @@ public class AnnounceFragment extends BaseFragment {
 		                }
 		            });
 			 }
-			 af.getActivity().runOnUiThread(new Runnable() {
+			 sf.getActivity().runOnUiThread(new Runnable() {
 	                public void run() {
 	                    // some code #3 (that needs to be ran in UI thread)
 	               	 //mCardArrayAdapter.addAll(cards);
 	               	
 	               	 //listView.invalidateViews();
-	               	af.getActivity().setProgressBarIndeterminateVisibility(false);
+	               	sf.getActivity().setProgressBarIndeterminateVisibility(false);
 	                }
 	            });
 			}
@@ -236,19 +241,20 @@ public class AnnounceFragment extends BaseFragment {
 
 			@Override
 			protected ArrayList<String[]> doInBackground(Void... arg0) {
-				af.getActivity().runOnUiThread(new Runnable() {
+				sf.getActivity().runOnUiThread(new Runnable() {
 	                public void run() {
 	                    // some code #3 (that needs to be ran in UI thread)
 	               	 //mCardArrayAdapter.addAll(cards);
 	               	
 	               	 //listView.invalidateViews();
-	               	af.getActivity().setProgressBarIndeterminateVisibility(true);
+	               	sf.getActivity().setProgressBarIndeterminateVisibility(true);
 	                }
 	            });
 				// TODO Auto-generated method stub
-				ArrayList<String[]> itemsList = sc.getAnnouncements(pos-1, count);
+				ArrayList<String[]> itemsList = sc.getEvents(pos+1, count);
 				return itemsList;
 			}
 			
 	    }
+	 
 }

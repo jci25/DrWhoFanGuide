@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.drexel.cs451.dr.who"
-    android:versionCode="4"
-    android:versionName=".1.2A" >
+    android:versionCode="6"
+    android:versionName=".2B" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -27,7 +27,7 @@
             android:theme="@style/AppTheme.TranslucentActionBar" >
         </activity>
         <activity
-            android:name="com.drexel.cs451.dr.who.AnnouncementActivity"
+            android:name="com.drexel.cs451.dr.who.DetailedActivity"
             android:theme="@style/AppTheme.TranslucentActionBar" >
         </activity>
         <activity

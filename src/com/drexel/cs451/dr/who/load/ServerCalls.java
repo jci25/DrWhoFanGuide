@@ -32,12 +32,13 @@ public class ServerCalls extends Activity {
 		callingContext = c;
 	}
 	
-	public ArrayList<String[]> getAnnouncements(int f, int c){
+public ArrayList<String[]> getAnnouncements(int f, int c){
 		
 		ArrayList<String[]> list = new ArrayList<String[]>();
 		String[] item = new String[4];
 		
-		final String URL = "http://www.chaosfalcon.com:8089/getannouncments?first="+f+"&count="+c;
+		final String URL = "http://www.chaosfalcon.com:8089/getannouncements?first="+f+"&count="+c;
+		System.out.println(URL);
 		String response = httpGet(URL);
 		try{
 			JSONObject jObject = new JSONObject(response);
@@ -48,7 +49,7 @@ public class ServerCalls extends Activity {
 				item[0] = jObject.get("header").toString();
 				item[1] = jObject.get("mediaurl").toString();
 				item[2] = jObject.get("text").toString();
-				item[3] = jObject.get("announcment_id").toString();
+				item[3] = jObject.get("announcement_id").toString();
 				list.add(item);
 			}
 		}catch(Exception e){
@@ -58,6 +59,151 @@ public class ServerCalls extends Activity {
 		
 		return list;
 	}
+
+public ArrayList<String[]> getSeasons(int f, int c){
+	
+	ArrayList<String[]> list = new ArrayList<String[]>();
+	String[] item = new String[3];
+	
+	final String URL = "http://www.chaosfalcon.com:8089/getseasons?first="+f+"&count="+c;
+	System.out.println(URL);
+	String response = httpGet(URL);
+	try{
+		JSONObject jObject = new JSONObject(response);
+		JSONArray jArr = jObject.getJSONArray("results");
+		for(int i = 0; i < jArr.length(); i++){
+			item = new String[3];
+			jObject = jArr.getJSONObject(i);
+			item[0] = jObject.get("season_id").toString();
+			item[1] = jObject.get("season_desc").toString();
+			item[2] = jObject.get("mediaurl").toString();
+			list.add(item);
+		}
+	}catch(Exception e){
+		System.err.println(e);
+	}
+		
+	
+	return list;
+}
+
+public ArrayList<String[]> getEvents(int f, int c){
+	
+	ArrayList<String[]> list = new ArrayList<String[]>();
+	String[] item = new String[6];
+	
+	final String URL = "http://www.chaosfalcon.com:8089/getevents?first="+f+"&count="+c;
+	System.out.println(URL);
+	String response = httpGet(URL);
+	try{
+		JSONObject jObject = new JSONObject(response);
+		JSONArray jArr = jObject.getJSONArray("results");
+		for(int i = 0; i < jArr.length(); i++){
+			item = new String[6];
+			jObject = jArr.getJSONObject(i);
+			item[0] = jObject.get("end_date").toString();
+			item[1] = jObject.get("mediaurl").toString();
+			item[2] = jObject.get("event_id").toString();
+			item[3] = jObject.get("event_desc").toString();
+			item[4] = jObject.get("header").toString();
+			item[5] = jObject.get("start_date").toString();
+			list.add(item);
+		}
+	}catch(Exception e){
+		System.err.println(e);
+	}
+		
+	
+	return list;
+}
+
+public ArrayList<String[]> getCharacters(){
+	
+	ArrayList<String[]> list = new ArrayList<String[]>();
+	String[] item = new String[3];
+	
+	final String URL = "http://www.chaosfalcon.com:8089/getcharactertitles";
+	System.out.println(URL);
+	String response = httpGet(URL);
+	try{
+		JSONObject jObject = new JSONObject(response);
+		JSONArray jArr = jObject.getJSONArray("results");
+		for(int i = 0; i < jArr.length(); i++){
+			item = new String[3];
+			jObject = jArr.getJSONObject(i);
+			item[0] = jObject.get("title_id").toString();
+			item[1] = jObject.get("mediaurl").toString();
+			item[2] = jObject.get("title").toString();
+			list.add(item);
+		}
+	}catch(Exception e){
+		System.err.println(e);
+	}
+		
+	
+	return list;
+}
+
+public ArrayList<String[]> getEpisodesBySeason(String id){
+	
+	ArrayList<String[]> list = new ArrayList<String[]>();
+	String[] item = new String[6];
+	
+	final String URL = "http://www.chaosfalcon.com:8089/getepisodesbyseason?season_id="+id;
+	System.out.println(URL);
+	String response = httpGet(URL);
+	try{
+		JSONObject jObject = new JSONObject(response);
+		JSONArray jArr = jObject.getJSONArray("results");
+		for(int i = 0; i < jArr.length(); i++){
+			item = new String[6];
+			jObject = jArr.getJSONObject(i);
+			item[0] = jObject.get("season_id").toString();
+			item[1] = "Ep " + jObject.get("episode_nbr").toString()+ ": ";
+			item[2] = jObject.get("mediaurl").toString();
+			item[3] = jObject.get("episode_desc").toString();
+			item[4] = jObject.get("episode_name").toString();
+			item[5] = jObject.get("thumbnail").toString();
+			
+			list.add(item);
+		}
+	}catch(Exception e){
+		System.err.println(e);
+	}
+		
+	
+	return list;
+}
+
+public ArrayList<String[]> getCharactersByTitle(String id){
+	
+	ArrayList<String[]> list = new ArrayList<String[]>();
+	String[] item = new String[5];
+	
+	final String URL = "http://www.chaosfalcon.com:8089/getcharacters?title_id="+id;
+	System.out.println(URL);
+	String response = httpGet(URL);
+	try{
+		JSONObject jObject = new JSONObject(response);
+		JSONArray jArr = jObject.getJSONArray("results");
+		for(int i = 0; i < jArr.length(); i++){
+			item = new String[5];
+			jObject = jArr.getJSONObject(i);
+			item[0] = jObject.get("character_id").toString();
+			item[1] = "";
+			item[2] = jObject.get("mediaurl").toString();
+			item[3] = jObject.get("bio").toString();
+			item[4] = jObject.get("character").toString();
+			
+			list.add(item);
+		}
+	}catch(Exception e){
+		System.err.println(e);
+	}
+		
+	
+	return list;
+}
 	
 	public int doLogin(String u, String p){
 		//final String URL = "http://chaosfalcon.com:8089/login?username=grover3&password=123abcd";

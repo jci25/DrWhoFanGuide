@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class SignupActivity extends Activity {
@@ -65,6 +66,8 @@ public class SignupActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_signup);
+		
+		
 
 		// Set up the login form.
 		//mEmail = getIntent().getStringExtra(EXTRA_EMAIL);

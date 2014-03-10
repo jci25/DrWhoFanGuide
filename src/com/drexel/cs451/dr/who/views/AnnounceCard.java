@@ -1,5 +1,10 @@
-package com.drexel.cs451.dr.who;
+package com.drexel.cs451.dr.who.views;
 
+import com.drexel.cs451.dr.who.DetailedActivity;
+import com.drexel.cs451.dr.who.R;
+import com.drexel.cs451.dr.who.R.drawable;
+import com.drexel.cs451.dr.who.R.id;
+import com.drexel.cs451.dr.who.R.layout;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Activity;
@@ -16,7 +21,8 @@ import it.gmariotti.cardslib.library.view.CardView;
 
 public class AnnounceCard extends Card{
 
-    protected String mTitleHeader, mediaUrl, previewText, id;
+    protected String mTitleHeader, mediaUrl, previewText;
+	public String id;
     protected Context context;
     //protected Activity act;
 
@@ -45,9 +51,10 @@ public class AnnounceCard extends Card{
 
 			@Override
 			public void onClick(Card card, View view) {
-				Intent intent = new Intent(context, AnnouncementActivity.class);
+				Intent intent = new Intent(context, DetailedActivity.class);
 				intent.putExtra("text", previewText);
 				intent.putExtra("Img", mediaUrl);
+				intent.putExtra("title", mTitleHeader);
 				context.startActivity(intent);
 			}
         });
@@ -61,7 +68,7 @@ public class AnnounceCard extends Card{
     
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-
+    	
         //Retrieve elements
         TextView previewText = (TextView) parent.findViewById(R.id.text);
         previewText.setText(this.previewText);

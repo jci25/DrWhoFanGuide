@@ -16,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -32,10 +33,12 @@ public class MainActivity extends Activity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mPageTitles;
+    private int position = -1;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_main);
 		
 		
@@ -130,21 +133,26 @@ public class MainActivity extends Activity {
     
     private void selectItem(int position) {
         // update the main content by replacing fragments
+    	System.out.println("selected");
+    	if(this.position == position){
+    		Toast.makeText(getBaseContext(), "Already here!!", Toast.LENGTH_SHORT).show();
+    		mDrawerLayout.closeDrawer(mDrawerList);
+    		return;
+    	}
+    	this.position = position;
     	Fragment fragment = null;
     	Bundle args = new Bundle();
     	if(position == 0){
     		fragment = new AnnounceFragment();
     	}else if(position == 1){
-    		Toast.makeText(getBaseContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
-    		mDrawerLayout.closeDrawer(mDrawerList);
-    		return;
+    		fragment = new CharactersFragment();
     		//fragment = new BioFragment();
     		//fragment = new BioChooserFragment();
     		//args.putString("URL", "http://www.bbc.co.uk/programmes/b006q2x0/features/characters");
+    	}else if(position == 2){
+    		fragment = new SeasonFragment();
     	}else if(position == 3){
-    		Toast.makeText(getBaseContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
-    		mDrawerLayout.closeDrawer(mDrawerList);
-    		return;
+    		fragment = new EventFragment();
     		//fragment = new CalendarFragment();
     	}else{
     		Toast.makeText(getBaseContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
@@ -155,19 +163,32 @@ public class MainActivity extends Activity {
     	/*case 2: //fragment = new EpisodeFragment();
     	case 4: //fragment = new settingsFragment();*/
     	
-        
+    	
         
         args.putInt(AnnounceFragment.ARG_PAGE_NUMBER, position);
         fragment.setArguments(args);
 
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        //fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        int backStackCount = fragmentManager.getBackStackEntryCount();
+        for (int i = 0; i < backStackCount; i++) {
+
+            // Get the back stack fragment id.
+            int backStackId = fragmentManager.getBackStackEntryAt(i).getId();
+
+            fragmentManager.popBackStack(backStackId, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        }
+        
+        System.out.println("ready to move");
         FragmentTransaction ft = fragmentManager.beginTransaction(); 
+        System.out.println("ready to move");
         ft.replace(R.id.content_frame, fragment);        	
         ft.commit();
         //fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         
         // update selected item and title, then close the drawer
+        
         mDrawerList.setItemChecked(position, true);
         setTitle(mPageTitles[position]);
         mDrawerLayout.closeDrawer(mDrawerList);

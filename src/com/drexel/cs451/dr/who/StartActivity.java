@@ -1,15 +1,19 @@
 package com.drexel.cs451.dr.who;
 
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.drexel.cs451.dr.who.load.ServerCalls;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -65,12 +69,8 @@ public class StartActivity extends Activity {
 	    	
 	    }else{
 	    	//check if user and pass is good
-	    	int login = sc.doLogin(username, pass);
-	    	if(login == 1){
-	    		Intent intent = new Intent(getBaseContext(), MainActivity.class);
-		        startActivity(intent);
-		        this.finish();
-	    	}
+	    	new login(this).execute();
+	    	
 	    }
 		
 	}
@@ -80,6 +80,38 @@ public class StartActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.start, menu);
 		return true;
+	}
+	
+	private class login extends AsyncTask<String, Void, Integer> {
+		Activity act;
+		
+		private login(Activity a){
+			act =a;
+		}
+		
+		@Override
+		protected Integer doInBackground(String... input) {
+			//TODO: get info and parse web
+			int login = sc.doLogin(username, pass);
+			return login;
+		}
+
+		@Override
+		protected void onProgressUpdate(Void... values) {
+		}
+		
+		@Override
+		protected void onPostExecute(Integer result) {
+			
+			if(result == 1){
+	    		Intent intent = new Intent(getBaseContext(), MainActivity.class);
+		        startActivity(intent);
+		        act.finish();
+	    	}
+		}
+
+
+
 	}
 
 }
