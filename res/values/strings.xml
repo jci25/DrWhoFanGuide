@@ -17,5 +17,8 @@
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     <string name="title_activity_start">StartActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_video">VideoActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

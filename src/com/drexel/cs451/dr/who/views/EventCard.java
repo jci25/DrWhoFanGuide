@@ -11,6 +11,7 @@ import com.drexel.cs451.dr.who.R;
 import com.drexel.cs451.dr.who.R.drawable;
 import com.drexel.cs451.dr.who.R.id;
 import com.drexel.cs451.dr.who.R.layout;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Activity;
@@ -145,7 +146,35 @@ public class EventCard extends Card{
         //Retrieve elements
         ImageView im = (ImageView) parent.findViewById(R.id.imageView);
        
-        UrlImageViewHelper.setUrlDrawable(im, this.mediaUrl, R.drawable.ic_launcher);
+        UrlImageViewHelper.setUrlDrawable(im, this.mediaUrl, new UrlImageViewCallback() {
+            @Override
+            public void onLoaded(ImageView im, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+                	try {
+                		
+                		
+                		
+                		Bitmap icon = loadedBitmap;
+
+                		int screenWidth = act.getWindowManager().getDefaultDisplay().getWidth();
+                		
+                		int bw = icon.getWidth();
+                		float t = (float) screenWidth / (float) bw;
+
+                		//im.setImageBitmap(icon);
+                		im.getLayoutParams().width = screenWidth;
+                		im.getLayoutParams().height = (int) (icon.getHeight() * t);
+                		// The following line is the one that scales your bitmap.
+                		Bitmap scaledIcon = Bitmap.createScaledBitmap(icon, screenWidth, (int) (icon.getHeight() * t), false);
+                		//im.setImageBitmap(scaledIcon);
+                		im.getLayoutParams().width = screenWidth;
+                		im.getLayoutParams().height = (int) (scaledIcon.getHeight());
+                		} catch (Exception e) {
+                		}
+               
+                
+            }
+        });
+        
         
     }
     

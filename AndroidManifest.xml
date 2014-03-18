@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.drexel.cs451.dr.who"
-    android:versionCode="6"
-    android:versionName=".2B" >
+    android:versionCode="9"
+    android:versionName=".3.2B" >
 
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -34,13 +33,11 @@
             android:name="com.drexel.cs451.dr.who.LoginActivity"
             android:label="Sign in"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-            
         </activity>
         <activity
             android:name="com.drexel.cs451.dr.who.SignupActivity"
             android:label="Sign up"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-            
         </activity>
         <activity
             android:name="com.drexel.cs451.dr.who.StartActivity"
@@ -50,6 +47,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:screenOrientation="landscape"
+            android:name="com.drexel.cs451.dr.who.VideoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_video"
+            android:theme="@style/FullscreenTheme" >
         </activity>
     </application>
 

@@ -10,6 +10,7 @@ import com.drexel.cs451.dr.who.R;
 import com.drexel.cs451.dr.who.R.drawable;
 import com.drexel.cs451.dr.who.R.id;
 import com.drexel.cs451.dr.who.R.layout;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Activity;
@@ -18,7 +19,11 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +33,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import it.gmariotti.cardslib.library.internal.Card;
@@ -90,7 +96,7 @@ public class SeasonCard extends Card{
 
         //Set the card inner text
         //setTitle(mTitleMain);
-        
+        System.out.println("body");
         
 
     }
@@ -99,9 +105,34 @@ public class SeasonCard extends Card{
     public void setupInnerViewElements(ViewGroup parent, View view) {
     	
         //Retrieve elements
-        ImageView im = (ImageView) parent.findViewById(R.id.imageView);
-       
-        UrlImageViewHelper.setUrlDrawable(im, this.mediaUrl, R.drawable.ic_launcher);
+        ImageView im = (ImageView) view.findViewById(R.id.imageView);
+        
+        UrlImageViewHelper.setUrlDrawable(im, this.mediaUrl, new UrlImageViewCallback() {
+            @Override
+            public void onLoaded(ImageView im, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+               
+                		
+                		
+                		Bitmap icon = loadedBitmap;
+
+                		int screenWidth = act.getWindowManager().getDefaultDisplay().getWidth();
+                		
+                		int bw = icon.getWidth();
+                		float t = (float) screenWidth / (float) bw;
+
+                		//im.setImageBitmap(icon);
+                		im.getLayoutParams().width = screenWidth;
+                		im.getLayoutParams().height = (int) (icon.getHeight() * t);
+                		// The following line is the one that scales your bitmap.
+                		System.out.println(screenWidth + " " + (int) (icon.getHeight() * t));
+                		Bitmap scaledIcon = Bitmap.createScaledBitmap(icon, screenWidth, (int) (icon.getHeight() * t), false);
+                		//im.setImageBitmap(scaledIcon);
+                		im.getLayoutParams().width = screenWidth;
+                		im.getLayoutParams().height = (int) (scaledIcon.getHeight());
+                
+            }
+        });
+        
         
     }
     

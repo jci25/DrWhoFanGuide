@@ -17,12 +17,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 public class StartActivity extends Activity {
 
 	private String username;
 	private String pass;
 	private ServerCalls sc = new ServerCalls();
+	Button bLogin;
+	Button bSignup;
+	ProgressBar logSpin;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +56,13 @@ public class StartActivity extends Activity {
 		    }
 		  };
 		
-		Button bLogin = (Button) findViewById(R.id.loignButton);
+		bLogin = (Button) findViewById(R.id.loignButton);
 		bLogin.setOnClickListener(loginHandler);
 		
-		Button bSignup = (Button) findViewById(R.id.signupButton);
+		bSignup = (Button) findViewById(R.id.signupButton);
 		bSignup.setOnClickListener(signupHandler);
+		
+		logSpin = (ProgressBar) findViewById(R.id.loginSpinner);
 		
 		
 		
@@ -69,6 +75,9 @@ public class StartActivity extends Activity {
 	    	
 	    }else{
 	    	//check if user and pass is good
+	    	bLogin.setVisibility(Button.INVISIBLE);
+	    	bSignup.setVisibility(Button.INVISIBLE);
+	    	logSpin.setVisibility(ProgressBar.VISIBLE);
 	    	new login(this).execute();
 	    	
 	    }
@@ -107,6 +116,10 @@ public class StartActivity extends Activity {
 	    		Intent intent = new Intent(getBaseContext(), MainActivity.class);
 		        startActivity(intent);
 		        act.finish();
+	    	}else{
+	    		bLogin.setVisibility(Button.VISIBLE);
+		    	bSignup.setVisibility(Button.VISIBLE);
+		    	logSpin.setVisibility(ProgressBar.INVISIBLE);
 	    	}
 		}
 

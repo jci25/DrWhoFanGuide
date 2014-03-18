@@ -14,6 +14,7 @@ import com.drexel.cs451.dr.who.R;
 import com.drexel.cs451.dr.who.R.drawable;
 import com.drexel.cs451.dr.who.R.id;
 import com.drexel.cs451.dr.who.R.layout;
+import com.koushikdutta.urlimageviewhelper.UrlImageViewCallback;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 
 import android.app.Activity;
@@ -91,6 +92,7 @@ public class EpisodeCard extends Card{
 				Intent intent = new Intent(context, DetailedActivity.class);
 				intent.putExtra("text", episode_desc);
 				intent.putExtra("Img", mediaUrl);
+				intent.putExtra("thumb", thumbnail);
 				intent.putExtra("title", episode_nbr+ episode_name);
 				context.startActivity(intent);
 			}
@@ -109,75 +111,40 @@ public class EpisodeCard extends Card{
         //Retrieve elements
         TextView previewText = (TextView) parent.findViewById(R.id.text);
         previewText.setText(this.episode_desc);
-        ImageView im = (ImageView) view.findViewById(R.id.imageView);
+        ImageView im = (ImageView) parent.findViewById(R.id.imageView);
+        UrlImageViewHelper.setUrlDrawable(im, this.thumbnail, new UrlImageViewCallback() {
+            @Override
+            public void onLoaded(ImageView im, Bitmap loadedBitmap, String url, boolean loadedFromCache) {
+            	
+                	try {
+                		
+                		
+                		
+                		Bitmap icon = loadedBitmap;
 
-        System.out.println(mediaUrl);
-        if(mediaUrl.endsWith(".mp4")){
-        	
-        	im.setImageResource(R.drawable.playvideo);
-        	// Get the ImageView and its bitmap
-            Drawable drawing = im.getDrawable();
-            Bitmap bitmap = ((BitmapDrawable)drawing).getBitmap();
+                		int screenWidth = act.getWindowManager().getDefaultDisplay().getWidth();
+                		
+                		int bw = icon.getWidth();
+                		float t = (float) screenWidth / (float) bw;
 
-            // Get current dimensions
-            int width = bitmap.getWidth();
-            int height = bitmap.getHeight();
-            
-         // Determine how much to scale: the dimension requiring less scaling is
-            // closer to the its side. This way the image always stays inside your
-            // bounding box AND either x/y axis touches it.
-            float xScale = ((float) 500) / width;
-            float yScale = ((float) 500) / height;
-            float scale = (xScale <= yScale) ? xScale : yScale;
-
-            // Create a matrix for the scaling and add the scaling data
-            Matrix matrix = new Matrix();
-            matrix.postScale(scale, scale);
-
-            // Create a new bitmap and convert it to a format understood by the ImageView
-            Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-            BitmapDrawable result = new BitmapDrawable(scaledBitmap);
-            width = scaledBitmap.getWidth();
-            height = scaledBitmap.getHeight();
-
-            // Apply the scaled bitmap
-            im.setImageDrawable(result);
-
-            // Now change ImageView's dimensions to match the scaled image
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) im.getLayoutParams();
-            params.width = width;
-            params.height = height;
-            im.setLayoutParams(params);
-            
-        	im.setOnClickListener(new OnClickListener(){
-
-				@Override
-				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent(Intent.ACTION_VIEW);
-
-		            intent.setDataAndType(Uri.parse(mediaUrl), "video/*");
-
-		            act.startActivity(Intent.createChooser(intent, "Complete action using"));
-				}
-        		
-        	});
-        }else{
-        	UrlImageViewHelper.setUrlDrawable(im, this.thumbnail, R.drawable.ic_launcher);
-        	im.setOnClickListener(new OnClickListener() {
-
-    			@Override
-    			public void onClick(View view) {
-    				Intent intent = new Intent(context, DetailedActivity.class);
-    				intent.putExtra("text", episode_desc);
-    				intent.putExtra("Img", thumbnail);
-    				intent.putExtra("title", episode_nbr + episode_name);
-    				context.startActivity(intent);
-    			}
-            });
-        }
-        
+                		//im.setImageBitmap(icon);
+                		im.getLayoutParams().width = screenWidth;
+                		im.getLayoutParams().height = (int) (icon.getHeight() * t);
+                		// The following line is the one that scales your bitmap.
+                		Bitmap scaledIcon = Bitmap.createScaledBitmap(icon, screenWidth, (int) (icon.getHeight() * t), false);
+                		//im.setImageBitmap(scaledIcon);
+                		im.getLayoutParams().width = screenWidth;
+                		im.getLayoutParams().height = (int) (scaledIcon.getHeight());
+                		} catch (Exception e) {
+                		}
+            	
+                
+            }
+        });
     }
+        	
+        
+    
     
     
 

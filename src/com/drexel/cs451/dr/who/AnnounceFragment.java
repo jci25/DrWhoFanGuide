@@ -103,7 +103,7 @@ public class AnnounceFragment extends BaseFragment {
 				
 			 
 			 for (int i=0;i<itemsList.size();i++){
-		            AnnounceCard card = new AnnounceCard(getActivity(),itemsList.get(i)[0],itemsList.get(i)[1],itemsList.get(i)[2],itemsList.get(i)[3]);
+		            AnnounceCard card = new AnnounceCard(getActivity(),itemsList.get(i)[0],itemsList.get(i)[1],itemsList.get(i)[2],itemsList.get(i)[3], getActivity());
 		            cards.add(card);
 		        }
 			 if(itemsList.size() % count == 0 && itemsList.size() != 0){
@@ -176,7 +176,7 @@ public class AnnounceFragment extends BaseFragment {
 			protected void onPostExecute(ArrayList<String[]> result) {
 			 ArrayList<String[]> itemsList = result;
 			 for (int i=0;i<itemsList.size();i++){
-		            AnnounceCard card = new AnnounceCard(getActivity(),itemsList.get(i)[0],itemsList.get(i)[1],itemsList.get(i)[2],itemsList.get(i)[3]);
+		            AnnounceCard card = new AnnounceCard(getActivity(),itemsList.get(i)[0],itemsList.get(i)[1],itemsList.get(i)[2],itemsList.get(i)[3], getActivity());
 		            cards.add(card);
 		        }
 			 AnnounceCard card1 = (AnnounceCard) cards.get(cards.size()-1);

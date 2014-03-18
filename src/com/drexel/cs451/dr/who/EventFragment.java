@@ -156,7 +156,7 @@ public class EventFragment extends BaseFragment {
 		                	}
 		                }
 		            });
-					ArrayList<String[]> itemsList = sc.getEvents(1, count);
+					ArrayList<String[]> itemsList = sc.getEvents(0, count);
 					
 					return itemsList;
 				}catch(Exception e){

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 public class DetailedActivity extends Activity {
+	private Activity act;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,25 +45,39 @@ public class DetailedActivity extends Activity {
 	tv.setText(text);
     ImageView im = (ImageView) findViewById(R.id.profile_image);
     im.getLayoutParams().height = 375;
+    act = this;
     if(img.endsWith(".mp4")){
-    	im.setImageResource(R.drawable.widelogo310);
+    	String thumb = extras.getString("thumb");
+    	UrlImageViewHelper.setUrlDrawable(im, thumb);
     	ImageView im1 = (ImageView) findViewById(R.id.imageView);
     	im1.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent(Intent.ACTION_VIEW);
+				/*Intent intent = new Intent(Intent.ACTION_VIEW);
 
 	            intent.setDataAndType(Uri.parse(img), "video/*");
 
-	            startActivity(Intent.createChooser(intent, "Complete action using"));
+	            startActivity(Intent.createChooser(intent, "Complete action using"));*/
+	            
+	            Intent intent = new Intent(act, VideoActivity.class);
+				intent.putExtra("url", img);
+				act.startActivity(intent);
 			}
     		
     	});
         
     }else{
-    	UrlImageViewHelper.setUrlDrawable(im, img);
+    	try{
+	    	String thumb = extras.getString("thumb");
+	    	if(thumb == null){
+	    		thumb = img;
+	    	}
+	    	UrlImageViewHelper.setUrlDrawable(im, thumb);
+    	}catch(Exception e){
+    		UrlImageViewHelper.setUrlDrawable(im, img);
+    	}
     }
     
     helper.initActionBar(this);
